@@ -14,11 +14,14 @@
 # limitations under the License.
 ##########################GO-LICENSE-END##################################
 
-require 'rubygems'
+module RailsLocalizer
+  class L
+    def method_missing method, *params
+      com.thoughtworks.go.i18n.LocalizedMessage.send(method, *params).localize(Spring.bean("localizer"))
+    end
+  end
 
-$:.unshift File.expand_path("#{File.dirname(__FILE__)}/../vendor/bundle")
-
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
-
-require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
+  def l
+    L.new
+  end
+end

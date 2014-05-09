@@ -14,11 +14,15 @@
 # limitations under the License.
 ##########################GO-LICENSE-END##################################
 
-require 'rubygems'
+#ENV['ADMIN_OAUTH_URL_PREFIX'] = "admin"
+#ENV['LOAD_OAUTH_SILENTLY'] = "yes"
 
-$:.unshift File.expand_path("#{File.dirname(__FILE__)}/../vendor/bundle")
+SHINE_PLATFORM = 'cruise' unless defined? SHINE_PLATFORM
+ENV["RAILS_ASSET_ID"] = File.readlines(Rails.root.join("../vm/admin/admin_version.txt.vm")).first
 
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
+Rails.application.config.after_initialize do |app|
+  require 'log4j_logger'
 
-require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
+  app.config.time_zone = 'UTC'
+  app.config.logger = Log4jLogger.new
+end

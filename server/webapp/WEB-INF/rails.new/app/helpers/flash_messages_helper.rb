@@ -14,11 +14,12 @@
 # limitations under the License.
 ##########################GO-LICENSE-END##################################
 
-require 'rubygems'
+module FlashMessagesHelper
+  def flash_message_pane_start id, no_body = false, options = {}
+    "<div class=\"flash\" id=\"#{id}\">".html_safe + (no_body ? flash_message_pane_end : "")
+  end
 
-$:.unshift File.expand_path("#{File.dirname(__FILE__)}/../vendor/bundle")
-
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
-
-require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
+  def flash_message_pane_end
+    "</div>".html_safe
+  end
+end

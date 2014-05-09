@@ -14,11 +14,15 @@
 # limitations under the License.
 ##########################GO-LICENSE-END##################################
 
-require 'rubygems'
+class ErbRenderer
+  include com.thoughtworks.go.plugins.presentation.Renderer
 
-$:.unshift File.expand_path("#{File.dirname(__FILE__)}/../vendor/bundle")
+  def render(task_view_model, context)
+    rb_hash = {}
+    context.each do |key, val|
+      rb_hash[key] = val
+    end
 
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
-
-require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
+    context[:view].render(:file => "#{task_view_model.getTemplatePath()}", :locals => rb_hash)
+  end
+end
